@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Karl Mulingayan",
+    "employee_id": 345,
+    "attendance": {},
+    "leave_requests": [],
+    "leave_status": {}
+  },
+  {
+    "name": "Gian Paolo Mulingbayan",
+    "employee_id": 1001,
+    "attendance": {},
+    "leave_requests": [],
+    "leave_status": {}
+  },
+  {
+    "name": "Joahna Marie Rosete",
+    "employee_id": 1002,
+    "attendance": {},
+    "leave_requests": [],
+    "leave_status": {}
+  }
+]
