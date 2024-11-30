@@ -19,5 +19,26 @@
     "attendance": {},
     "leave_requests": [],
     "leave_status": {}
+  },
+  {
+    "name": "Ruel Macalalad",
+    "employee_id": 1004,
+    "attendance": {},
+    "leave_requests": [],
+    "leave_status": {}
+  },
+  {
+    "name": "Roel Bendania",
+    "employee_id": 1005,
+    "attendance": {},
+    "leave_requests": [],
+    "leave_status": {}
+  },
+  {
+    "name": "Renz Samonte",
+    "employee_id": 1009,
+    "attendance": {},
+    "leave_requests": [],
+    "leave_status": {}
   }
 ]

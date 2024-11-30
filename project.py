@@ -172,8 +172,8 @@ def main():
     while True:
         print("\nWelcome to the Attendance Management System")
         print("Are you an Employee or Human Resources?")
-        user_type = input("Enter 'E' for Employee or 'H' for Human Resources (Q to Quit Program): ").upper()
-        
+        user_type = input("Enter 'E' for Employee or 'H' for Human Resources (Q to Quit Program): ")
+        user_type = user_type.upper()
 
         if user_type == 'E':
             employee_id = input("Enter your Employee ID: ").strip()
@@ -368,7 +368,7 @@ def main():
                     sleep(2)
                     os.system('cls')
 
-        elif user_type == 'Q' and user_type =='q':
+        elif user_type == 'Q':
             print("Exiting the Attendance Management System. Goodbye!")
             sleep(2)
             os.system('cls')
