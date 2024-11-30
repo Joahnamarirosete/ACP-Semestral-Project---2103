@@ -1,6 +1,6 @@
 Project Title: Employee Attendance System
 
-Video Demo: https://github.com/Joahnamarirosete/ACP-Semestral-Project---2103
+Video Demo: https://drive.google.com/file/d/1ZpvuFdKi7SRNoAS3xMlRjCsLKf3YAOHP/view?usp=sharing
 
 Description:
 
