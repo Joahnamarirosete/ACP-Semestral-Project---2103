@@ -4,24 +4,4 @@ Video Demo: https://github.com/Joahnamarirosete/ACP-Semestral-Project---2103
 
 Description:
 
-Clock In/Clock Out: Employees can record attendance with time stamps.
-Leave Requests: Employees can request leaves by providing start date, end date, and reason.
-View Leave Status Employees can see their leave request status that is pending, approved or denied.
-HR Features:
-
-View Leave Status: Employees can view the status of their leave requests (pending, approved, or denied).
-HR Features:
-
-Attendance Reports:
-Generate reports for the last 15 days or the current month.
-Shows clock-in and clock-out times for each employee within the selected period.
-Manage Leave Requests:
-View and approve/deny leave requests submitted by employees.
-Approved leaves automatically mark those dates as "On Leave" in the attendance records.
-Data Persistence:
-
-Employee data, attendance sheets, and leave requests are stored in a JSON file called employees.json. This way, the data is not lost when sessions are closed.
-Authentication:
-Password for HR: hr123
-Console
-The employee and HR have a menu-driven clean and neat interface, with automatic clearing of screens using os.system('cls') and sleep() calls for better readability.
+The Attendance Management System allows employees to mark their attendance with clock-in and clock-out time stamps and also apply for leaves specifying the start and end dates, reason, and check the status of their leave applications, which may be pending, approved, or declined. The system provides HR with the ability to generate attendance reports for the last 15 days or the current month, displaying clock-in and clock-out times for each employee within the selected period. HR can also manage leave requests by approving or denying them; approved leaves automatically mark the corresponding dates as "On Leave" in the attendance records. Data on the employees, attendance logs, and leave requests are persisted in a JSON file named employees.json. The system includes password authentication for the HR person (hr123). Automatic screen clearing and pauses between lines have been included for easy readability.
