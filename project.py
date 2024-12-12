@@ -374,7 +374,7 @@ class AttendanceApp:
                 for day in range(1, num_days + 1):
                     date = datetime(year, month, day).date()
 
-                    attendance = employee.attendance.get(date, {'clock_in': None, 'clock_out': None})
+                    attendance = employee.attendance.get(date.strftime("%Y-%m-%d"), {'clock_in': None, 'clock_out': None})
                     clock_in = attendance['clock_in'] if attendance['clock_in'] else "N/A"
                     clock_out = attendance['clock_out'] if attendance['clock_out'] else "N/A"
                     tree.insert("", "end", values=(employee.name, date, clock_in, clock_out))

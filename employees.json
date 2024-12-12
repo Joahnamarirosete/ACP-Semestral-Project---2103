@@ -2,9 +2,44 @@
   {
     "name": "Karl Mulingayan",
     "employee_id": 345,
-    "attendance": {},
+    "attendance": {
+      "2024-12-12": {
+        "clock_in": "15:46:07",
+        "clock_out": "15:46:10"
+      },
+      "2024-12-14": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-15": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-16": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-17": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-18": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-19": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-20": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      }
+    },
     "leave_requests": [],
-    "leave_status": {}
+    "leave_status": {
+      "2024-12-14_2024-12-20": "Approved"
+    }
   },
   {
     "name": "Gian Paolo Mulingbayan",
@@ -52,8 +87,134 @@
   {
     "name": "Renz Samonte",
     "employee_id": 1009,
-    "attendance": {},
+    "attendance": {
+      "2024-12-12": {
+        "clock_in": "15:51:59",
+        "clock_out": "15:52:02"
+      },
+      "2024-12-23": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-24": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-25": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-26": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-27": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-28": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-29": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-30": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      }
+    },
     "leave_requests": [],
-    "leave_status": {}
+    "leave_status": {
+      "2024-12-20_2024-12-20": "Denied",
+      "2024-12-23_2024-12-30": "Approved"
+    }
+  },
+  {
+    "name": "Micka Francisco",
+    "employee_id": 100,
+    "attendance": {
+      "2024-12-12": {
+        "clock_in": "15:56:58",
+        "clock_out": "15:57:01"
+      },
+      "2024-12-13": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-14": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-15": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-16": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-17": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-18": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-19": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-20": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-21": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-22": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-23": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-24": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-25": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-26": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-27": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-28": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-29": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      },
+      "2024-12-30": {
+        "clock_in": "On Leave",
+        "clock_out": "On Leave"
+      }
+    },
+    "leave_requests": [],
+    "leave_status": {
+      "2024-12-13_2024-12-30": "Approved"
+    }
   }
 ]
