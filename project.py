@@ -308,6 +308,8 @@ class AttendanceApp:
             while current_date <= end_date:
                 employee.attendance[current_date.strftime("%Y-%m-%d")] = {'clock_in': 'On Leave', 'clock_out': 'On Leave'}
                 current_date += timedelta(days=1)
+            
+            employee.leave_requests = [req for req in employee.leave_requests if req['start_date'] != leave_request['start_date'] or req['end_date'] != leave_request['end_date']]
                 
             self.attendance_system.save_employees()
             
@@ -321,6 +323,8 @@ class AttendanceApp:
 
         if key in employee.leave_status:
             employee.leave_status[key] = "Denied"
+            
+            employee.leave_requests = [req for req in employee.leave_requests if req['start_date'] != leave_request['start_date'] or req['end_date'] != leave_request['end_date']]
                 
             self.attendance_system.save_employees()
             
