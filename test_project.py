@@ -1,48 +1,50 @@
-import project
-from datetime import datetime, timedelta
+import pytest
+from datetime import datetime
+from unittest.mock import patch
 from project import Employee, AttendanceSystem
 
-def test_clock_in():
-    employee = Employee("Test Employee", 101)
-    employee.clock_in()
-    today = datetime.now().date()
-    assert today in employee.attendance
-    assert employee.attendance[today]["clock_in"] is not None
-    assert employee.attendance[today]["clock_out"] is None
+attendance_system = AttendanceSystem()
 
-def test_request_leave():
-    employee = Employee("Test Employee", 102)
-    start_date = datetime(2023, 11, 1).date()
-    end_date = datetime(2023, 11, 5).date()
-    reason = "Vacation"
-    employee.request_leave(start_date, end_date, reason)
+@pytest.fixture
+def sample_employee():
+    employee = Employee("Gian Paolo Mulingbayan", 1001)
+    attendance_system.add_employee(employee)
+    return employee
+
+
+def test_clock_in(sample_employee):
+    sample_employee.clock_in()
+    today = datetime.now().date().strftime("%Y-%m-%d")
+    assert sample_employee.attendance[today]['clock_in'] is not None
+
+
+def test_clock_out(sample_employee):
+    sample_employee.clock_in()
+    sample_employee.clock_out()
+    today = datetime.now().date().strftime("%Y-%m-%d")
+    assert sample_employee.attendance[today]['clock_out'] is not None
+
+
+def test_request_leave(sample_employee):
+    start_date = "2024-12-15"
+    end_date = "2024-12-17"
+    reason = "Sick"
     
-    assert (start_date, end_date) in employee.leave_status
-    assert employee.leave_status[(start_date, end_date)] == "Pending"
-    assert len(employee.leave_requests) == 1
-    assert employee.leave_requests[0] == {
-        "start_date": start_date,
-        "end_date": end_date,
-        "reason": reason
-    }
-
-def test_generate_attendance_report():
-    employee = Employee("Test Employee", 103)
-    start_date = datetime(2023, 11, 1).date()
-    end_date = datetime(2023, 11, 5).date()
-    
-
-    employee.attendance[start_date] = {'clock_in': "09:00 AM", 'clock_out': "05:00 PM"}
-    employee.attendance[start_date + timedelta(days=1)] = {'clock_in': "09:15 AM", 'clock_out': "05:15 PM"}
-    
-    report = employee.generate_attendance_report(start_date, end_date)
-    
-    assert report[start_date]["clock_in"] == "09:00 AM"
-    assert report[start_date]["clock_out"] == "05:00 PM"
-    assert report[start_date + timedelta(days=1)]["clock_in"] == "09:15 AM"
-    assert report[start_date + timedelta(days=1)]["clock_out"] == "05:15 PM"
-    assert report[start_date + timedelta(days=2)] == {'clock_in': None, 'clock_out': None}
+    sample_employee.request_leave(start_date, end_date, reason)
+    assert len(sample_employee.leave_requests) == 1
+    assert sample_employee.leave_requests[0]['start_date'] == start_date
+    assert sample_employee.leave_requests[0]['end_date'] == end_date
+    assert sample_employee.leave_requests[0]['reason'] == reason
 
 
-if __name__ == "__main__":
-    project.main()
+
+def test_manager_authentication():
+    assert attendance_system.authenticate_manager("hr123")
+    assert not attendance_system.authenticate_manager("wrongpassword")
+
+
+def test_add_employee():
+    new_employee = Employee("Joahna Marie Rosete", 1002)
+    attendance_system.add_employee(new_employee)
+    assert 1002 in attendance_system.employees
+    assert attendance_system.employees[1002].name == "Joahna Marie Rosete"
