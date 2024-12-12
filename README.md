@@ -1,6 +1,7 @@
 Project Title: Employee Attendance System
 
-Vido Demo: (https://drive.google.com/file/d/1wwGlrwU_XeePtfU9Jp_nv_B_EpmZpSFo/view?usp=drive_link)
+Video Demo: (https://drive.google.com/file/d/1wwGlrwU_XeePtfU9Jp_nv_B_EpmZpSFo/view?usp=drive_link)
+
 Updated Video Demo: [https://drive.google.com/file/d/1ZpvuFdKi7SRNoAS3xMlRjCsLKf3YAOHP/view?usp=sharing](https://drive.google.com/file/d/1wwGlrwU_XeePtfU9Jp_nv_B_EpmZpSFo/view?usp=drive_link)
 
 Description:
