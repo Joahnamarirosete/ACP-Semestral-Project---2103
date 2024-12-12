@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
+from tkcalendar import Calendar
 from datetime import datetime, timedelta
 import json
 import calendar
@@ -119,18 +120,17 @@ class AttendanceSystem:
 
 
 class AttendanceApp:
-    attendance_system = AttendanceSystem()
-    sample_employee = Employee("Gian Paolo Mulingbayan", 1001)
-    attendance_system.add_employee(sample_employee)
-
-    sample_employee2 = Employee("Joahna Marie Rosete", 1002)
-    attendance_system.add_employee(sample_employee2)
-
     def __init__(self, root):
         self.root = root
         self.attendance_system = AttendanceSystem()
         self.root.title("Attendance Management System")
         self.main_menu()
+        
+        sample_employee = Employee("Gian Paolo Mulingbayan", 1001)
+        self.attendance_system.add_employee(sample_employee)
+
+        sample_employee2 = Employee("Joahna Marie Rosete", 1002)
+        self.attendance_system.add_employee(sample_employee2)
 
     def main_menu(self):
         self.clear_screen()
@@ -192,6 +192,7 @@ class AttendanceApp:
         tk.Button(self.root, text="Clock In", command=lambda: self.clock_in(employee), width=20, height=2).pack(pady=5)
         tk.Button(self.root, text="Clock Out", command=lambda: self.clock_out(employee), width=20, height=2).pack(pady=5)
         tk.Button(self.root, text="Request Leave", command=lambda: self.request_leave(employee), width=20, height=2).pack(pady=5)
+        tk.Button(self.root, text="View Leave Status", command=lambda: self.view_leave_status(employee), width=20, height=2).pack(pady=5)
         tk.Button(self.root, text="Back", command=self.main_menu, width=20, height=2).pack(pady=5)
 
     def clock_in(self, employee):
@@ -208,25 +209,25 @@ class AttendanceApp:
         leave_window = tk.Toplevel(self.root)
         leave_window.title("Request Leave")
 
-        tk.Label(leave_window, text="Start Date (YYYY-MM-DD)").pack()
-        start_date_entry = tk.Entry(leave_window)
-        start_date_entry.pack()
+        tk.Label(leave_window, text="Start Date").pack()
+        start_date_calendar = Calendar(leave_window, date_pattern="yyyy-mm-dd")
+        start_date_calendar.pack()
 
-        tk.Label(leave_window, text="End Date (YYYY-MM-DD)").pack()
-        end_date_entry = tk.Entry(leave_window)
-        end_date_entry.pack()
+        tk.Label(leave_window, text="End Date").pack()
+        end_date_calendar = Calendar(leave_window, date_pattern="yyyy-mm-dd")
+        end_date_calendar.pack()
 
         tk.Label(leave_window, text="Reason").pack()
         reason_entry = tk.Entry(leave_window)
         reason_entry.pack()
 
         def submit_leave():
-            start_date = start_date_entry.get()
-            end_date = end_date_entry.get()
+            start_date = start_date_calendar.get_date()
+            end_date = end_date_calendar.get_date()
             reason = reason_entry.get()
 
-            if not start_date or not end_date or not reason:
-                messagebox.showerror("Error", "All fields are required")
+            if not reason:
+                messagebox.showerror("Error", "Reason is required")
                 return
 
             try:
@@ -237,7 +238,6 @@ class AttendanceApp:
             except ValueError as e:
                 messagebox.showerror("Error", f"Invalid date: {e}")
                 return
-            
 
             employee.request_leave(start_date, end_date, reason)
             self.attendance_system.save_employees()
@@ -249,6 +249,36 @@ class AttendanceApp:
     def clear_screen(self):
         for widget in self.root.winfo_children():
             widget.destroy()
+            
+    def view_leave_status(self, employee):
+    # Create a new window to display the leave status
+        leave_status_window = tk.Toplevel(self.root)
+        leave_status_window.title("Leave Status")
+    
+    # Create a header label
+        tk.Label(leave_status_window, text="Leave Requests Status", font=("Arial", 14)).pack(pady=10)
+    
+    # Create a treeview to display leave request details
+        columns = ("Start Date", "End Date", "Reason", "Status")
+        tree = ttk.Treeview(leave_status_window, columns=columns, show="headings")
+        tree.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
+    
+    # Set the column headers
+        for col in columns:
+            tree.heading(col, text=col)
+            tree.column(col, width=150)
+
+    # Add leave requests to the treeview
+        for leave_request in employee.leave_requests:
+            start_date = leave_request['start_date']
+            end_date = leave_request['end_date']
+            reason = leave_request['reason']
+            status = employee.leave_status.get(f"{start_date}_{end_date}", "Pending")
+            tree.insert("", "end", values=(start_date, end_date, reason, status))
+        
+    
+    # Add a button to close the window
+        tk.Button(leave_status_window, text="Close", command=leave_status_window.destroy).pack(pady=10)
 
     def hr_login(self):
         self.clear_screen()
@@ -290,9 +320,9 @@ class AttendanceApp:
                 
                 # Pass the specific employee and leave_request using default arguments
                 tk.Button(frame, text="Approve", 
-                          command=lambda emp=employee, req=leave_request:self.approve_leave(emp, req)).pack(side=tk.LEFT, padx=5)
+                        command=lambda emp=employee, req=leave_request:self.approve_leave(emp, req)).pack(side=tk.LEFT, padx=5)
                 tk.Button(frame, text="Deny", 
-                          command=lambda emp=employee, req=leave_request: self.deny_leave(emp, req)).pack(side=tk.LEFT, padx=5)
+                        command=lambda emp=employee, req=leave_request: self.deny_leave(emp, req)).pack(side=tk.LEFT, padx=5)
 
     def approve_leave(self, employee, leave_request):
         key = f"{leave_request['start_date']}_{leave_request['end_date']}"
@@ -312,8 +342,10 @@ class AttendanceApp:
             employee.leave_requests = [req for req in employee.leave_requests if req['start_date'] != leave_request['start_date'] or req['end_date'] != leave_request['end_date']]
                 
             self.attendance_system.save_employees()
-            
+            messagebox.showinfo("Success", f"Approved leave for {employee.name}")
             print("Leave request approved.")
+            self.hr_menu() 
+            return
         else:
             print("Leave request not found.")
 
@@ -329,6 +361,7 @@ class AttendanceApp:
             self.attendance_system.save_employees()
             
             messagebox.showinfo("Success", f"Denied leave for {employee.name}")
+            self.hr_menu()
         else:
             messagebox.showerror("Error", "No matching leave request found or it is not pending.")
         
