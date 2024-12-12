@@ -70,25 +70,12 @@ class AttendanceSystem:
         try:
             with open(self.employee_file, 'r') as file:
                 data = json.load(file)
-            for employee_data in data:
-                name = employee_data['name']
-                employee_id = employee_data['employee_id']
-
-                attendance = {}
-                for date_str, record in employee_data['attendance'].items():
-                    date = datetime.strptime(date_str, "%Y-%m-%d").date()
-                    clock_in_time = datetime.strptime(record['clock_in'], "%H:%M:%S").time() if record['clock_in'] else None
-                    clock_out_time = datetime.strptime(record['clock_out'], "%H:%M:%S").time() if record['clock_out'] else None
-                    attendance[date] = {'clock_in': clock_in_time, 'clock_out': clock_out_time}
-
-                leave_requests = employee_data['leave_requests']
-                leave_status = employee_data['leave_status']
-
-                employee = Employee(name, employee_id)
-                employee.attendance = attendance
-                employee.leave_requests = leave_requests
-                employee.leave_status = leave_status
-                self.employees[employee_id] = employee
+                for employee_data in data:
+                    employee = Employee(employee_data['name'], employee_data['employee_id'])
+                    employee.attendance = employee_data['attendance']
+                    employee.leave_requests = employee_data['leave_requests']
+                    employee.leave_status = employee_data['leave_status']
+                    self.employees[employee.employee_id] = employee
         except FileNotFoundError:
             pass
 
@@ -308,11 +295,8 @@ class AttendanceApp:
                           command=lambda emp=employee, req=leave_request: self.deny_leave(emp, req)).pack(side=tk.LEFT, padx=5)
 
     def approve_leave(self, employee, leave_request):
-        print("Leave request to approve:", leave_request)
-        print("Current leave status:", employee.leave_status)
-
         key = f"{leave_request['start_date']}_{leave_request['end_date']}"
-    
+
         
         if key in employee.leave_status:
             employee.leave_status[key] = "Approved"
@@ -325,10 +309,7 @@ class AttendanceApp:
                 employee.attendance[current_date.strftime("%Y-%m-%d")] = {'clock_in': 'On Leave', 'clock_out': 'On Leave'}
                 current_date += timedelta(days=1)
                 
-            # self.attendance_system.save_employees()
-            
-            print(employee.attendance)
-            print(employee.leave_status)
+            self.attendance_system.save_employees()
             
             print("Leave request approved.")
         else:
@@ -336,28 +317,17 @@ class AttendanceApp:
 
 
     def deny_leave(self, employee, leave_request):
-        print("Leave request to deny:", leave_request)
-        print("Current leave status:", employee.leave_status)
+        key = f"{leave_request['start_date']}_{leave_request['end_date']}"
 
-    # Check if start_date and end_date are already datetime.date objects
-        if isinstance(leave_request['start_date'], str):
-            start_date = datetime.strptime(leave_request['start_date'], "%Y-%m-%d").date()
-        else:
-            start_date = leave_request['start_date']
-
-        if isinstance(leave_request['end_date'], str):
-            end_date = datetime.strptime(leave_request['end_date'], "%Y-%m-%d").date()
-        else:
-            end_date = leave_request['end_date']
-
-    # Ensure the leave request exists in the leave_status
-        if (start_date, end_date) in employee.leave_status and employee.leave_status[(start_date, end_date)] == "Pending":
-            employee.leave_status[(start_date, end_date)] = "Denied"
-            self.save_employees()  # Save after denial
-            print(f"Leave denied from {start_date} to {end_date}.")
+        if key in employee.leave_status:
+            employee.leave_status[key] = "Denied"
+                
+            self.attendance_system.save_employees()
+            
             messagebox.showinfo("Success", f"Denied leave for {employee.name}")
         else:
             messagebox.showerror("Error", "No matching leave request found or it is not pending.")
+        
 
 
     def view_attendance_report(self):
