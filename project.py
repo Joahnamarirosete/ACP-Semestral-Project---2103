@@ -14,15 +14,15 @@ class Employee:
 
     def clock_in(self):
         now = datetime.now()
-        date = now.date()
-        time = now.time()
+        date = now.date().strftime("%Y-%m-%d")
+        time = now.time().strftime("%H:%M:%S")
         self.attendance[date] = {'clock_in': time, 'clock_out': None}
         print(f"Clock in at {time} on {date}")
 
     def clock_out(self):
         now = datetime.now()
-        date = now.date()
-        time = now.time()
+        date = now.date().strftime("%Y-%m-%d")
+        time = now.time().strftime("%H:%M:%S")
         if date in self.attendance:
             self.attendance[date]['clock_out'] = time
             print(f"Clock out at {time} on {date}")
@@ -98,37 +98,14 @@ class AttendanceSystem:
         with open(self.employee_file, 'w') as file:
             data = []
             for employee in self.employees.values():
-                attendance = {}
-                for date, record in employee.attendance.items():
-                    date_str = date.strftime("%Y-%m-%d")
-                    clock_in_time = record['clock_in'].strftime("%H:%M:%S") if record['clock_in'] else None
-                    clock_out_time = record['clock_out'].strftime("%H:%M:%S") if record['clock_out'] else None
-                    attendance[date_str] = {'clock_in': clock_in_time, 'clock_out': clock_out_time}
-                
-
-                leave_requests = [
-                    {
-                        'start_date': req['start_date'],
-                        'end_date': req['end_date'],
-                        'reason': req['reason']
-                    }
-                    for req in employee.leave_requests
-                ]
-
-                leave_status = {
-                    f"{date}": status
-                    for date, status in employee.leave_status.items()
-                }
-
                 employee_data = {
                     'name': employee.name,
                     'employee_id': employee.employee_id,
-                    'attendance': attendance,
-                    'leave_requests': leave_requests,
-                    'leave_status': leave_status
+                    'attendance': employee.attendance,
+                    'leave_requests': employee.leave_requests,
+                    'leave_status': employee.leave_status
                 }
                 data.append(employee_data)
-
             json.dump(data, file, indent=2)
 
 
@@ -334,50 +311,29 @@ class AttendanceApp:
         print("Leave request to approve:", leave_request)
         print("Current leave status:", employee.leave_status)
 
-# Check if start_date and end_date are already datetime.date objects
-        if isinstance(leave_request['start_date'], str):
-            start_date = datetime.strptime(leave_request['start_date'], "%Y-%m-%d").date()
-        else:
-            start_date = leave_request['start_date']
-
-        if isinstance(leave_request['end_date'], str):
-            end_date = datetime.strptime(leave_request['end_date'], "%Y-%m-%d").date()
-        else:
-            end_date = leave_request['end_date']
-
-# Convert the keys to datetime.date objects
-        leave_status = {
-            (datetime.strptime(start_end.split('_')[0], "%Y-%m-%d").date(),
-            datetime.strptime(start_end.split('_')[1], "%Y-%m-%d").date()): status
-            for start_end, status in employee.leave_status.items()      
-        }
-
-# Add these print statements
-        print("Checking leave request:", (start_date, end_date))
-        print("Leave status keys:", leave_status.keys())
-
-# Ensure the leave request exists in the leave_status
-        if (start_date, end_date) in leave_status and leave_status[(start_date, end_date)] == "Pending":
-            leave_status[(start_date, end_date)] = "Approved"
-            employee.leave_status = {
-                f"{start_end[0].strftime('%Y-%m-%d')}_{start_end[1].strftime('%Y-%m-%d')}": status
-                for start_end, status in leave_status.items()
-            }
-            self.attendance_system.save_employees
-            print("Leave status updated to Approved")
-            print("Leave status keys:", employee.leave_status)
+        key = f"{leave_request['start_date']}_{leave_request['end_date']}"
     
-    # Mark the attendance for the requested leave days
+        
+        if key in employee.leave_status:
+            employee.leave_status[key] = "Approved"
+            
+            start_date = datetime.strptime(leave_request['start_date'], "%Y-%m-%d").date()
+            end_date = datetime.strptime(leave_request['end_date'], "%Y-%m-%d").date()
+            
             current_date = start_date
             while current_date <= end_date:
-                employee.attendance[current_date] = {'clock_in': 'On Leave', 'clock_out': 'On Leave'}
+                employee.attendance[current_date.strftime("%Y-%m-%d")] = {'clock_in': 'On Leave', 'clock_out': 'On Leave'}
                 current_date += timedelta(days=1)
-    
-            self.attendance_system.save_employees  # Save after approval
-            print(f"Leave approved from {start_date} to {end_date}.")
-            messagebox.showinfo("Success", f"Approved leave for {employee.name}")
+                
+            # self.attendance_system.save_employees()
+            
+            print(employee.attendance)
+            print(employee.leave_status)
+            
+            print("Leave request approved.")
         else:
-            messagebox.showerror("Error", "No matching leave request found or it is not pending.")
+            print("Leave request not found.")
+
 
     def deny_leave(self, employee, leave_request):
         print("Leave request to deny:", leave_request)

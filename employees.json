@@ -2,12 +2,7 @@
   {
     "name": "Karl Mulingayan",
     "employee_id": 345,
-    "attendance": {
-      "2024-12-12": {
-        "clock_in": "14:22:15",
-        "clock_out": "14:32:22"
-      }
-    },
+    "attendance": {},
     "leave_requests": [],
     "leave_status": {}
   },
@@ -16,8 +11,8 @@
     "employee_id": 1001,
     "attendance": {
       "2024-12-12": {
-        "clock_in": "14:42:54",
-        "clock_out": "14:42:58"
+        "clock_in": "15:30:30",
+        "clock_out": "15:30:37"
       }
     },
     "leave_requests": [
